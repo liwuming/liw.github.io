@@ -216,7 +216,7 @@ function create_detail(dirname,filepath){
 		commands[dirname][obj.commond]['desc'] = obj["command-desc"];
 		*/commands[dirname][obj.command] = {
 			"name":obj.command,
-			"path":"/"+obj.command,
+			"path":"/commands/"+obj.command,
 			"desc":obj["command-desc"]
 		};
 		
