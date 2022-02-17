@@ -88,7 +88,7 @@ const encoding = 'utf8',md_options= {
   };
 	  
 	  
-const commands = {};
+//const commands = {};
 const header = file_get_contents(__dirname+'/website/header.html');
 const footer = file_get_contents(__dirname+'/website/footer.html');
 const md = new Md(md_options).use(MtI).use(MtF).use(MtC, "success", {
@@ -137,9 +137,47 @@ const md = new Md(md_options).use(MtI).use(MtF).use(MtC, "success", {
   },
 });
 
-main(__dirname+'/command');
-//create_home(commands,config);
+
+
+let commands = file_get_contents('./commands.json');
+commands = JSON.parse(commands);
+
+create_module(commands,config);
+//main(__dirname+'/command');
+create_home(commands,config);
 //file_put_contents('./commands.json',JSON.stringify(commands));
+
+function create_module(commands,config){
+	
+	for(let group in commands){
+		let markdown = file_get_contents(__dirname+"/command/"+group+"/readme.md");
+		
+		
+		if(markdown){
+			let result = markdown.match(reg);
+			
+			if(result && result.length>0){
+				//let obj = yaml.load(result[1]);
+				markdown = markdown.replace(result[0],'');
+			}
+			
+			
+			
+			let contents = md.render(markdown);
+			contents = '<div class="ui-body-section"><div class="ui-main-section"><div class="ui-article-section"> <div class="ui-article-title"> <h1>'+config[group]+'</h1><div class="operate"> <a target="_blank" href="https://github.com/jaywcjlove/linux-command/edit/master/command/apachectl.md">纠正错误</a><span class="split"></span> <a target="_blank" href="https://github.com/jaywcjlove/linux-command/edit/master/command/apachectl.md">添加实例</a> </div> </div><article id="detail">'+contents+'</article></div><div class="ui-comments-section">评论区</div></div> <div class="ui-sidebar-section"></div></div>';
+			
+			let html = header + contents + footer;
+			file_put_contents(__dirname+"/docs/commands/"+group+'/index.html',html);
+		}else{
+			console.log(404);
+		}
+		
+	}
+	//let html = header + contents + footer;
+	//file_put_contents(__dirname+"/docs/index.html",html);
+}
+
+
 /*
 let filesList = create_detail(__dirname+'/command');
 fs.readFile('./1.md', 'utf8' , (err, data) => {
@@ -235,8 +273,7 @@ function create_detail(dirname,filepath){
 function create_home(commands,config){
 	let contents = '<div id="primary" class="sidebar-right clearfix"><div class="ht-container"><section id="content" role="main"><div id="homepage-categories" class="clearfix">';
 	for(let group in commands){
-        contents += '<div class="row"><h2> <a href="" title="">'+config[group]+'</a></h2><ul class="category-posts">';
-		
+        contents += '<div class="row"><h2> <a href="/commands/'+group+'/index.html" title="">'+config[group]+'</a></h2><ul class="category-posts">';
 		for(let command in commands[group]){
 			contents += '<li class="format-standard"><a href="'+commands[group][command]["path"]+'.html">'+commands[group][command]["name"]+'--'+commands[group][command]["desc"]+'</a></li>';
 		}
@@ -249,14 +286,21 @@ function create_home(commands,config){
 
 
 function file_get_contents(file_path){
-	console.log(file_path);
-	let contents = fs.readFileSync(file_path,encoding)
+	try{
+		let contents = fs.readFileSync(file_path,encoding)
 	
-	return contents;
+		return contents;
+	}catch(err){
+		return false;
+	}
 }
 
 function file_put_contents(file_path,content){
-	let options = {encoding:encoding};
+	let options = {encoding:encoding,flag:"w"};
+	let dirname = path.dirname(file_path,'.html');
+	if (!fs.existsSync(dirname)) {
+		fs.mkdirSync(dirname)
+	}
 	let result = fs.writeFileSync(file_path, content,options);
 	return result;
 }

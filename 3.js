@@ -16,7 +16,30 @@ console.log(commands);
 
 const header = file_get_contents(__dirname+'/website/header.html');
 const footer = file_get_contents(__dirname+'/website/footer.html');
-create_home(commands,config);
+
+
+create_module(commands,config);
+//create_home(commands,config);
+function create_module(commands,config){
+	
+	for(let group in commands){
+		let markdown = file_get_contents(__dirname+"/command/"+group+"/readme.md");
+		
+		
+		if(markdown){
+			
+			
+			
+			
+		}
+		console.log(markdown);
+		
+	}
+	//let html = header + contents + footer;
+	//file_put_contents(__dirname+"/docs/index.html",html);
+}
+
+
 function create_home(commands,config){
 	let contents = '<div id="primary" class="sidebar-right clearfix"><div class="ht-container"><section id="content" role="main"><div id="homepage-categories" class="clearfix">';
 	for(let group in commands){
@@ -34,10 +57,13 @@ function create_home(commands,config){
 
 
 function file_get_contents(file_path){
-	console.log(file_path);
-	let contents = fs.readFileSync(file_path,encoding)
+	try{
+		let contents = fs.readFileSync(file_path,encoding)
 	
-	return contents;
+		return contents;
+	}catch(err){
+		return false;
+	}
 }
 
 function file_put_contents(file_path,content){
