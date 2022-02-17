@@ -1,5 +1,18 @@
+@charset "UTF-8";
+:root{
+    --ui-base-font-size:14px;
+    --ui-base-font-color:#24292f;
+    --ui-base-font-color-active:#2486ff;
+    --ui-base-border-radius:5px;
+    --ui-base-bg-color:#f5f6f7;
+    --ui-base-header-height:45px;
+    --ui-base-font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,"sans-serif","Apple Color Emoji","Segoe UI Emoji";
+    --ui-article-font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,"sans-serif","Apple Color Emoji","Segoe UI Emoji";
+    --ui-article-font-size: 16px;
+    --color-border-muted: hsla(210,18%,87%,1);
+}
 
-* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+*{margin:0;padding:0;-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
 
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary{display:block}
 audio,canvas,video{display:inline-block;*display:inline;*zoom:1}
