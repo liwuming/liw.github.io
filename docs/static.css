@@ -518,9 +518,9 @@ code[class*="language-"] ::selection {
  word-wrap:normal;color:#787878;display:block;
 	word-break: break-word;position: relative;
 }
-#detail blockquote>:first-child {margin-top: 0;}
-#detail blockquote>:last-child {margin-bottom:0}
 #detail blockquote>p{line-height:23px;}
+#detail blockquote>p:first-child{margin-top: 0;}
+#detail blockquote>p:last-child{margin-bottom:0}
 #detail blockquote>code,#detail blockquote pre {
 	background-color: #eee
 }
