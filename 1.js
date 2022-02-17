@@ -219,8 +219,7 @@ function create_detail(dirname,filepath){
 			"path":"/commands/"+obj.command,
 			"desc":obj["command-desc"]
 		};
-		
-		
+		markdown = markdown.replace(result[0],'');
 		let contents = md.render(markdown);
 		contents = '<main id="ui-main">'+contents+'</main>';
 		let html = header + contents + footer;
@@ -233,10 +232,6 @@ function create_detail(dirname,filepath){
 
 
 function create_home(commands){
-	
-	
-	
-	
 	//contents = '<main id="ui-main">'+contents+'</main>';
 	//let html = header + contents + footer;
 	//file_put_contents(__dirname+"/docs/index.html',html);
