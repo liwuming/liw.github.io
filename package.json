@@ -1,31 +1,45 @@
 {
-  "name": "theme-vdoing-blog",
-  "version": "1.0.0",
+  "name": "linux-command",
+  "version": "1.8.2",
+  "description": "Linux Command",
+  "homepage": "https://jaywcjlove.github.io/linux-command/",
+  "main": "dist/data.json",
+  "type": "module",
   "scripts": {
-    "dev": "vuepress dev docs",
-    "build": "vuepress build docs",
-    "deploy": "bash deploy.sh",
-    "editFm": "node utils/editFrontmatter.js",
-    "baiduPush": "node utils/baiduPush.js https://xugaoyi.com && bash baiduPush.sh",
-    "publish": "cd theme-vdoing && npm publish && cd ../ && npm update vuepress-theme-vdoing"
+    "start": "npm run build",
+    "build": "node build/build.mjs",
+    "dash": "npm run build && node build/dash.js"
   },
+  "files": [
+    "command",
+    "dist"
+  ],
+  "keywords": [
+    "cli",
+    "Linux",
+    "Command"
+  ],
+  "author": "kenny wang <wowohoo@qq.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaywcjlove/linux-command.git"
+  },
   "devDependencies": {
-    "inquirer": "^7.1.0",
-    "json2yaml": "^1.1.0",
-    "moment": "^2.25.3",
-    "vuepress": "1.5.2",
-    "vuepress-plugin-baidu-autopush": "^1.0.1",
-    "vuepress-plugin-baidu-tongji": "^1.0.1",
-    "vuepress-plugin-demo-block": "^0.7.2",
-    "vuepress-plugin-one-click-copy": "^1.0.2",
-    "vuepress-plugin-thirdparty-search": "^1.0.2",
-    "vuepress-plugin-zooming": "^1.1.7",
-    "vuepress-theme-vdoing": "^1.5.1",
-    "yamljs": "^0.3.0"
+    "archiver": "5.3.0",
+    "colors-cli": "1.0.28",
+    "ejs": "3.1.6",
+    "fs-extra": "10.0.0",
+    "markdown-to-html-cli": "3.2.5",
+    "sitemap-generator": "8.5.1",
+    "sqlite3": "5.0.2",
+    "stylus": "0.55.0",
+    "uglify-js": "3.14.4"
+  },
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
   "dependencies": {
-    "vuepress-plugin-comment": "^0.7.3",
-    "yarn": "^1.22.17"
+    "markdown-it": "^12.3.2"
   }
 }
