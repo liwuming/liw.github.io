@@ -509,7 +509,7 @@ code[class*="language-"] ::selection {
 
 #detail blockquote {
 	margin:1.25rem 0;
-	padding:10px 10px 10px 7px;
+	padding:12px 10px 12px 7px;
 	background:#eef0f4;
 	border-left:5px solid #dddfe4;
 	font-style: normal;
