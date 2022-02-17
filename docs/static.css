@@ -44,23 +44,23 @@ body{background:#f6f7f8;font-size:16px;}
 .ui-article-title h1{font-size:38px;}
 
 
-.ui-article-title .operate{position:absolute;top:18px;right:25px;display:flex;}
+.ui-article-title .operate{position:absolute;top:40px;right:25px;display:flex;}
 .ui-article-title .operate a {
     text-decoration: none;
     background: #2196f3;
-    color: #fff;font-size:15px;
+    color: #fff;font-size:14px;
     border-radius:3px;
     padding:0 5px;
-	height: 25px;
-    line-height: 25px;
+	height: 24px;
+    line-height: 24px;
 }
 .ui-article-title .operate .split {
     display: inline-block;
-    height: 13px;
+    height: 15px;
     vertical-align: middle;
     width: 1px;
     border-left: 1px solid #dfdfdf;
-    margin:0 3px;
+    margin:6px 5px;
 }
 
 
