@@ -1,6 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 
+
+
+
 import yaml from 'js-yaml';
 import Md  from 'markdown-it';
 import MtC from "markdown-it-container";
@@ -16,11 +19,7 @@ import "prismjs/components/prism-python.js";
 import "prismjs/components/prism-javascript.js";
 import "prismjs/components/prism-sql.js";
 
-
-
 const __dirname = path.resolve();
-const reg = /^---\s*?([a-z][\s\S]*?)\s*?---.*?/mi;
-
 const encoding = 'utf8',md_options= {
 	html: false,
 	xhtmlOut: false,
@@ -88,7 +87,7 @@ const encoding = 'utf8',md_options= {
   };
 	  
 	  
-const commands = {};
+	  
 const header = file_get_contents(__dirname+'/website/header.html');
 const footer = file_get_contents(__dirname+'/website/footer.html');
 const md = new Md(md_options).use(MtI).use(MtF).use(MtC, "success", {
@@ -137,112 +136,13 @@ const md = new Md(md_options).use(MtI).use(MtF).use(MtC, "success", {
   },
 });
 
-main(__dirname+'/command');
 
-file_put_contents('./commands.json',JSON.stringify(commands));
-/*
-let filesList = create_detail(__dirname+'/command');
-fs.readFile('./1.md', 'utf8' , (err, data) => {
-	create_home();
-	return;
-  if (err) {
-    console.error(err)
-    return
-  }
-  
-  let md = new Md();
-  let content = md.render(data);
-  fs.writeFile('./1.txt', content, err => {
-	  if (err) {
-		console.error(err)
-		return
-	  }
-	  //文件写入成功。
-	  console.log('write--ok');
-	})
-  
-  console.log(data)
-})
+const reg = /^---\s*?([a-z][\s\S]*?)\s*?---.*?/mi;
+let contents = file_get_contents(__dirname+'/1.md');
 
-
-fs.writeFile('/Users/joe/test.txt', content, err => {
-  if (err) {
-    console.error(err)
-    return
-  }
-  //文件写入成功。
-})
-*/
-
-function main(dir,filesList = []){
-    const files = fs.readdirSync(dir);
-    files.forEach((item, index) => {
-        var fullPath = path.join(dir, item);
-        const stat = fs.statSync(fullPath);
-        if (stat.isDirectory()) {      
-            main(path.join(dir, item), filesList);  //递归读取文件
-        } else {
-            filesList.push(fullPath); 
-			//console.log(path.basename(dir));
-			//console.log(item);
-			//console.log(path.basename(item,'.md'));
-			//var fileName = basename(file,extension); // 获取没有后缀的文件名
-			
-			create_detail(path.basename(dir),fullPath);
-        }        
-    });
-    return filesList;
-}
-
-
-
-function create_detail(dirname,filepath){
-	/*此处可以做一些优化，实现seo，关键字之类的*/
-	let markdown = file_get_contents(filepath);
-	
-	//let contents = file_get_contents(__dirname+'/1.md');
-	let result = markdown.match(reg);
-	
-	
-	console.log(result);
-	if(result && result.length>0){
-		let obj = yaml.load(result[1]);
-		if(!commands.hasOwnProperty(dirname)){
-			commands[dirname] = {};
-		}
-		/*
-		commands[dirname][obj.commond]['name'] = obj.command;
-		commands[dirname][obj.commond]['path'] = "/"+obj.command;
-		commands[dirname][obj.commond]['desc'] = obj["command-desc"];
-		*/commands[dirname][obj.command] = {
-			"name":obj.command,
-			"path":"/"+obj.command,
-			"desc":obj["command-desc"]
-		};
-		
-		
-		let contents = md.render(markdown);
-		contents = '<main id="ui-main">'+contents+'</main>';
-		let html = header + contents + footer;
-		file_put_contents(__dirname+"/docs/commands/"+obj.command+'.html',html);
-		
-	}else{
-		console.error('yaml解析错误,或许格式错误,或许缺少command/command-desc');
-	}
-}
-
-
-function create_home(commands){
-	
-	
-	
-	
-	//contents = '<main id="ui-main">'+contents+'</main>';
-	//let html = header + contents + footer;
-	//file_put_contents(__dirname+"/docs/index.html',html);
-}
-
-
+let result = contents.match(reg);
+let obj = yaml.load(result[1]);
+console.log(obj.command);
 function file_get_contents(file_path){
 	console.log(file_path);
 	let contents = fs.readFileSync(file_path,encoding)
@@ -252,6 +152,7 @@ function file_get_contents(file_path){
 
 function file_put_contents(file_path,content){
 	let options = {encoding:encoding};
+	console.log(options);
 	let result = fs.writeFileSync(file_path, content,options);
 	return result;
 }
