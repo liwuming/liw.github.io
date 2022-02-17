@@ -23,7 +23,7 @@ function create_home(commands,config){
         contents += '<div class="row"><h2> <a href="" title="">'+config[group]+'</a></h2><ul class="category-posts">';
 		
 		for(let command in commands[group]){
-			contents += '<li class="format-standard"><a href="'+commands[group][command]["path"]+'.html">'+commands[group][command]["name"]+'--'+commands[group][command]["desc"]+'</a></li>';
+			contents += '<li class="format-standard"><a href="/commands'+commands[group][command]["path"]+'.html">'+commands[group][command]["name"]+'--'+commands[group][command]["desc"]+'</a></li>';
 		}
         contents += '</ul></div>';
 	}
