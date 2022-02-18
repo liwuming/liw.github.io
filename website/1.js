@@ -271,18 +271,35 @@ function create_detail(dirname,filepath){
 
 
 function create_home(commands,config){
-	let contents = '<div class="ui-body-section"><div class="ui-main-section"><div class="ui-contents-section" style="margin:0;">';
+	let contents = '<div id="primary" class="sidebar-right clearfix"><div class="ht-container"><section id="content" role="main"><div id="homepage-categories" class="clearfix">';
 	for(let group in commands){
-        contents += '<div class="ui-chapter-section"><h2> <a href="/commands/'+group+'/index.html" title="">'+config[group]+'</a></h2><ul>';
+        contents += '<div class="row"><h2> <a href="/commands/'+group+'/index.html" title="">'+config[group]+'</a></h2><ul class="category-posts">';
 		for(let command in commands[group]){
-			contents += '<li class="format-standard"><a href="'+commands[group][command]["path"]+'.html">'+commands[group][command]["name"]+'--'+commands[group][command]["desc"]+'</a></li>';
-			
 			contents += '<li class="format-standard"><a href="'+commands[group][command]["path"]+'.html">'+commands[group][command]["name"]+'--'+commands[group][command]["desc"]+'</a></li>';
 		}
         contents += '</ul></div>';
-			
 	}
-	contents += '</div></div> <div class="ui-sidebar-section"></div></div>';
+	contents += '</div></section><div class="ui-sidebar-section"></div></div></div>';
+	
+	
+	
+	
+			<div class="ui-chapter-section">
+				<h2> <a href="/commands/11/index.html" title="">系统管理</a></h2>
+				<ul>
+					<li class="format-standard"><a href="/commands/touch.html">touch--touch desc</a></li>
+					<li class="format-standard"><a href="/commands/touch.html">touch--touch desc</a></li>
+					<li class="format-standard"><a href="/commands/touch.html">touch--touch desc</a></li>
+					<li class="format-standard"><a href="/commands/touch.html">touch--touch desc</a></li>
+				</ul>
+			</div>
+		</div>
+	</div> 
+	<div class="ui-sidebar-section"></div>
+</div>
+
+
+
 	let html = header + contents + footer;
 	file_put_contents(__dirname+"/docs/index.html",html);
 }
