@@ -33,6 +33,61 @@
 <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba<span class="token punctuation">;</span>
 <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba<span class="token punctuation">;</span>
 </code></pre>
+<p>常用选项</p>
+<p>-u，</p>
+<p>-d，指定家目录<br>
+-s，--shell，指定用户的默认shell</p>
+<blockquote class="ui-warning-section"><p>为新用户设置默认shell时，需保障当前环境存在所指定的shell，那如何查看当前系统有那些可用shell呢</p>
+</blockquote><pre class="line-numbers"><div class="line-numbers-rows"><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p></div><code class="language-shell">liwuming@DESKTOP-LD577G5:~$ <span class="token function">cat</span> /etc/shells
+<span class="token comment"># /etc/shells: valid login shells</span>
+/bin/sh
+/bin/bash
+/usr/bin/bash
+/bin/rbash
+/usr/bin/rbash
+/bin/dash
+/usr/bin/dash
+/usr/bin/tmux
+/usr/bin/screen
+</code></pre>
+<p>疑惑：valid login shells</p>
+<p>login shell和no-login shell</p>
+<p>-r，--system，创建系统用户<br>
+-M，不创建用户主目录<br>
+-f，--<br>
+-D，显示添加用户时的默认配置信息<br>
+-D option value:用户修改默认配置信息</p>
+<p>修改之后的配置信息保存在/etc/default/useradd文件中</p>
+<p>注意：<br>
+创建用户时的默认配置信息设置在/etc/login.defs</p>
+<p>umask是什么</p>
+<p><a href="https://linuxhandbook.com/login-shell/">https://linuxhandbook.com/login-shell/</a></p>
+<p>usermod--修改用户信息<br>
+常用选项:</p>
+<ul>
+<li>-u，--uid,修改指定uid</li>
+<li>-g，--gid,修改所属基本组</li>
+<li>-G，--groups，修改用户所属附加组</li>
+</ul>
+<blockquote class="ui-warning-section"><p><code>-G</code>选项默认会进行覆盖操作，若期望在原有基础上进行追加，则需要<code>-a</code>选项的帮助</p>
+</blockquote><ul>
+<li>-a，--append，与-G选项一起使用，用于为用户追加新的附加组</li>
+<li>-c，--comment comment_msg，修改注释信息</li>
+<li>-d，--home home_dir，修改用户的家目录</li>
+</ul>
+<blockquote class="ui-warning-section"><p>使用<code>-d</code>选项时需注意，若原来家目录下有文件，-d选项不会移动原有数据，可能会造成数据丢失，若期望修改家目录并移动移动家目录下的文件，则选择<code>-m</code>选项的配合</p>
+</blockquote><ul>
+<li>-m,--move-home，只能与-d选项一起使用时生效，用于将原家目录及其子目录文件移动到新目录</li>
+</ul>
+<p>正则表达式</p>
+<p>用户管理<br>
+进程管理<br>
+软件包的安装</p>
+<p>awera 意识到</p>
+<p>probably 可能，大概，或许</p>
+<p>interactive 交互</p>
+<p>revisit</p>
+<p>at the same time</p>
 </article></div><div class="ui-comments-section">评论区</div></div> <div class="ui-sidebar-section"></div></div><footer class="ui-footer-section">
 
 </footer>
