@@ -4,7 +4,10 @@
 ## name -- 
 
 
-## SYNOPSIS -- 概要
+## SYNOPSIS -- 使用方式
+1.
+
+2.
 useradd -D [options]
 useradd [options] LOGIN
 
@@ -117,10 +120,28 @@ https://linuxhandbook.com/login-shell/
 
 
 
-
 useradd gentoo -g gentoo -G 5000 5001
 
 
+# passwd -- 修改用户密码
+
+## name -- 功能释义
+> change user password
+
+## synopsis -- 使用说明
+passwd [options] [LOGIN]
+
+
+## description -- 详细描述
+> The passwd command changes passwords for user accounts. A normal user may only change the password for their own account, while the superuser may change the password for any account.  passwd also changes the account or associated password validity period.
+
+1.普通用户仅可以修改自己的账户密码，但超级管理员可以修改任何账户密码(直接更改)
+2.passwd命令还可用来修改密码的有效期
+
+
+
+- validity　正确，合法，
+- period 时代，
 
 
 正则表达式
@@ -145,6 +166,11 @@ awera 意识到
 
 probably 可能，大概，或许
 
+
+
+validity 
+
+period 有效期，
 
 interactive 交互
 

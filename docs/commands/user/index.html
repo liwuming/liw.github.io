@@ -29,7 +29,11 @@
 </div>
 </div><div class="ui-body-section"><div class="ui-main-section"><div class="ui-article-section"> <div class="ui-article-title"> <h1>文件管理</h1><div class="operate"> <a target="_blank" href="https://github.com/jaywcjlove/linux-command/edit/master/command/apachectl.md">纠正错误</a><span class="split"></span> <a target="_blank" href="https://github.com/jaywcjlove/linux-command/edit/master/command/apachectl.md">添加实例</a> </div> </div><article id="detail"><h1>useradd -- 添加用户</h1>
 <h2>name --</h2>
-<h2>SYNOPSIS -- 概要</h2>
+<h2>SYNOPSIS -- 使用方式</h2>
+<ol>
+<li></li>
+<li></li>
+</ol>
 <p>useradd -D [options]<br>
 useradd [options] LOGIN</p>
 <h2>description-- 描述</h2>
@@ -97,12 +101,31 @@ useradd [options] LOGIN</p>
 <p>在删除用户时，默认并不删除家目录，除非添加了<code>-r</code>选项</p>
 </blockquote>
 <p>useradd gentoo -g gentoo -G 5000 5001</p>
+<h1>passwd -- 修改用户密码</h1>
+<h2>name -- 功能释义</h2>
+<blockquote>
+<p>change user password</p>
+</blockquote>
+<h2>synopsis -- 使用说明</h2>
+<p>passwd [options] [LOGIN]</p>
+<h2>description -- 详细描述</h2>
+<blockquote>
+<p>The passwd command changes passwords for user accounts. A normal user may only change the password for their own account, while the superuser may change the password for any account.  passwd also changes the account or associated password validity period.</p>
+</blockquote>
+<p>1.普通用户仅可以修改自己的账户密码，但超级管理员可以修改任何账户密码(直接更改)<br>
+2.passwd命令还可用来修改密码的有效期</p>
+<ul>
+<li>validity　正确，合法，</li>
+<li>period 时代，</li>
+</ul>
 <p>正则表达式</p>
 <p>用户管理<br>
 进程管理<br>
 软件包的安装</p>
 <p>awera 意识到</p>
 <p>probably 可能，大概，或许</p>
+<p>validity</p>
+<p>period 有效期，</p>
 <p>interactive 交互</p>
 <p>revisit<br>
 invoked 调用</p>
