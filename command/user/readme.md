@@ -1,15 +1,17 @@
 
 # useradd -- 添加用户
 
+
 ## name -- 
 
 
-## SYNOPSIS -- 使用方式
-1.
+## synopsis -- 使用说明
+1. useradd -D [options]
 
-2.
-useradd -D [options]
-useradd [options] LOGIN
+
+
+2. useradd [options] LOGIN
+
 
 
 ## description-- 描述
@@ -139,6 +141,104 @@ passwd [options] [LOGIN]
 2.passwd命令还可用来修改密码的有效期
 
 
+## options--常用选项 
+
+- -l，lock，锁定用户
+- -u，--unlock，解锁用户
+- -d，--delete，删除账户密码
+- -e，--expire，使账户密码立刻过期
+- -S，--status，展示账户状态信息,展示的信息
+
+
+```shell
+root@DESKTOP-LD577G5:~# passwd -aS
+root P 02/18/2022 0 99999 7 -1
+daemon L 08/19/2021 0 99999 7 -1
+bin L 08/19/2021 0 99999 7 -1
+sys L 08/19/2021 0 99999 7 -1
+```
+--stdin
+echo "mageedu" |passwd --stdin docker &> /dev/null
+echo $?
+
+
+
+
+
+
+# gpasswd
+
+
+向组设置密码
+向组中添加用户，删除用户
+
+给组添加密码有什么用?
+
+避免用户临时切换用户
+
+
+
+files
+/etc/passwd,记录了所有账户的信息，但不包含密码信息
+/etc/shadow，左右账户的密码信息
+/etc/pam.d/passwd
+
+
+su 
+
+
+# change -- 更改用户密码过期信息
+
+
+# id -- *****
+- -u，仅显示有效的uid
+- -g，仅显示有效的基本组gid
+- -G，仅显示所有组的id
+
+- -n，显示名称而非id
+
+
+# su -- 用户切换
+
+登录时切换
+非登录式切换
+
+
+> 一般情况下，都需要加-，进行登录切换
+
+
+
+- -，-l，--login，
+- -c，--command，不切换用户，仅以指定目标用户执行命令
+
+
+
+
+groupadd
+groupmod
+groupdel
+
+useradd
+usermod
+userdel
+
+passwd
+su
+id
+newgrp
+charge
+
+
+
+
+
+
+
+
+
+
+
+------
 
 - validity　正确，合法，
 - period 时代，
