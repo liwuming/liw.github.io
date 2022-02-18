@@ -279,7 +279,7 @@ function create_home(commands,config){
 		}
         contents += '</ul></div>';
 	}
-	contents += '</div></section></div></div>';
+	contents += '</div></section><div class="ui-sidebar-section"></div></div></div>';
 	let html = header + contents + footer;
 	file_put_contents(__dirname+"/docs/index.html",html);
 }
