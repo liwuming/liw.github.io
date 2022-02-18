@@ -13,11 +13,15 @@
 </head>
 <body>
 <div id="live-search">
-<div class="ht-container">
+<div class="ui-container">
+
+<div id="logo"><a href="/"><img src="https://cdn.ibiancheng.vip/github/logo.png"></a></div>
 <div id="search-wrap">
 <form role="search" method="get" id="searchform" class="clearfix" action="https://www.linuxcool.com/">
+<div class="search-input-section">
 <input type="text" onfocus="if (this.value == '请输入一个命令或相关功能') {this.value = '';}" onblur="if (this.value == '')  {this.value = '请输入一个命令或相关功能';}" value="请输入一个命令或相关功能" name="s" id="s" autocapitalize="off" autocorrect="off" autocomplete="off">
 <i class="live-search-loading fa fa-spinner fa-spin"></i>
+</div>
 <button type="submit" id="searchsubmit">
 <i class="fa fa-search"></i><span>查询</span>
 </button>

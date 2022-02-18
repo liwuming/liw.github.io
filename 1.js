@@ -143,7 +143,7 @@ let commands = file_get_contents('./commands.json');
 commands = JSON.parse(commands);
 
 create_module(commands,config);
-//main(__dirname+'/command');
+main(__dirname+'/command');
 create_home(commands,config);
 //file_put_contents('./commands.json',JSON.stringify(commands));
 
@@ -219,17 +219,17 @@ function main(dir,filesList = []){
         const stat = fs.statSync(fullPath);
         if (stat.isDirectory()) {      
             main(path.join(dir, item), filesList);  //递归读取文件
-        } else {
-            filesList.push(fullPath); 
+        } else if(item.toLowerCase() !== 'readme.md'){
+            
+			//filesList.push(fullPath); 
 			//console.log(path.basename(dir));
 			//console.log(item);
 			//console.log(path.basename(item,'.md'));
 			//var fileName = basename(file,extension); // 获取没有后缀的文件名
-			
 			create_detail(path.basename(dir),fullPath);
         }        
     });
-    return filesList;
+    //return filesList;
 }
 
 
