@@ -1,24 +1,30 @@
 
-# 我是用户管理
+# useradd -- 添加用户
+
+## name -- 
 
 
-```sql
-select * from dba;
-select * from dba;
-select * from dba;
-select * from dba;
-```
+## SYNOPSIS -- 概要
+useradd -D [options]
+useradd [options] LOGIN
+
+
+## description-- 描述
+
+
+## options--常用选项 
 
 
 
-
+-g 
+-G 指定用户所属附加组，可以是group name也可以是gid，当属于多个gid时，
+-s,--shell,为用户指定默认的shell
+-r,--shell,创建系统用户
 
 
 
 常用选项
-
 -u，
-
 -d，指定家目录
 -s，--shell，指定用户的默认shell
 
@@ -74,7 +80,8 @@ https://linuxhandbook.com/login-shell/
 
 
 
-usermod--修改用户信息
+# usermod -- 修改用户信息
+
 常用选项:
 - -u，--uid,修改指定uid
 - -g，--gid,修改所属基本组
@@ -92,7 +99,26 @@ usermod--修改用户信息
 - -m,--move-home，只能与-d选项一起使用时生效，用于将原家目录及其子目录文件移动到新目录
 
 
+-l，--login new_uname,
+-s，--shell,
+-l，--lock，锁定用户密码
+-U,--unlock，解锁用户密码
 
+
+
+使用频率较多的命令，-G
+
+
+
+# userdel -- 删除用户
+- -r，删除用户家目录
+> 在删除用户时，默认并不删除家目录，除非添加了`-r`选项
+
+
+
+
+
+useradd gentoo -g gentoo -G 5000 5001
 
 
 
@@ -124,7 +150,7 @@ interactive 交互
 
 
 revisit
-
-
+invoked 调用
+ 
 at the same time
 

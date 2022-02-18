@@ -27,15 +27,20 @@
 </form>
 </div>
 </div>
-</div><div class="ui-body-section"><div class="ui-main-section"><div class="ui-article-section"> <div class="ui-article-title"> <h1>文件管理</h1><div class="operate"> <a target="_blank" href="https://github.com/jaywcjlove/linux-command/edit/master/command/apachectl.md">纠正错误</a><span class="split"></span> <a target="_blank" href="https://github.com/jaywcjlove/linux-command/edit/master/command/apachectl.md">添加实例</a> </div> </div><article id="detail"><h1>我是用户管理</h1>
-<pre class="line-numbers"><div class="line-numbers-rows"><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p></div><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba<span class="token punctuation">;</span>
-<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba<span class="token punctuation">;</span>
-<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba<span class="token punctuation">;</span>
-<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba<span class="token punctuation">;</span>
-</code></pre>
-<p>常用选项</p>
-<p>-u，</p>
-<p>-d，指定家目录<br>
+</div><div class="ui-body-section"><div class="ui-main-section"><div class="ui-article-section"> <div class="ui-article-title"> <h1>文件管理</h1><div class="operate"> <a target="_blank" href="https://github.com/jaywcjlove/linux-command/edit/master/command/apachectl.md">纠正错误</a><span class="split"></span> <a target="_blank" href="https://github.com/jaywcjlove/linux-command/edit/master/command/apachectl.md">添加实例</a> </div> </div><article id="detail"><h1>useradd -- 添加用户</h1>
+<h2>name --</h2>
+<h2>SYNOPSIS -- 概要</h2>
+<p>useradd -D [options]<br>
+useradd [options] LOGIN</p>
+<h2>description-- 描述</h2>
+<h2>options--常用选项</h2>
+<p>-g<br>
+-G 指定用户所属附加组，可以是group name也可以是gid，当属于多个gid时，<br>
+-s,--shell,为用户指定默认的shell<br>
+-r,--shell,创建系统用户</p>
+<p>常用选项<br>
+-u，<br>
+-d，指定家目录<br>
 -s，--shell，指定用户的默认shell</p>
 <blockquote class="ui-warning-section"><p>为新用户设置默认shell时，需保障当前环境存在所指定的shell，那如何查看当前系统有那些可用shell呢</p>
 </blockquote><pre class="line-numbers"><div class="line-numbers-rows"><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p><p class="row-number"></p></div><code class="language-shell">liwuming@DESKTOP-LD577G5:~$ <span class="token function">cat</span> /etc/shells
@@ -62,8 +67,8 @@
 创建用户时的默认配置信息设置在/etc/login.defs</p>
 <p>umask是什么</p>
 <p><a href="https://linuxhandbook.com/login-shell/">https://linuxhandbook.com/login-shell/</a></p>
-<p>usermod--修改用户信息<br>
-常用选项:</p>
+<h1>usermod -- 修改用户信息</h1>
+<p>常用选项:</p>
 <ul>
 <li>-u，--uid,修改指定uid</li>
 <li>-g，--gid,修改所属基本组</li>
@@ -79,6 +84,19 @@
 </blockquote><ul>
 <li>-m,--move-home，只能与-d选项一起使用时生效，用于将原家目录及其子目录文件移动到新目录</li>
 </ul>
+<p>-l，--login new_uname,<br>
+-s，--shell,<br>
+-l，--lock，锁定用户密码<br>
+-U,--unlock，解锁用户密码</p>
+<p>使用频率较多的命令，-G</p>
+<h1>userdel -- 删除用户</h1>
+<ul>
+<li>-r，删除用户家目录</li>
+</ul>
+<blockquote>
+<p>在删除用户时，默认并不删除家目录，除非添加了<code>-r</code>选项</p>
+</blockquote>
+<p>useradd gentoo -g gentoo -G 5000 5001</p>
 <p>正则表达式</p>
 <p>用户管理<br>
 进程管理<br>
@@ -86,7 +104,8 @@
 <p>awera 意识到</p>
 <p>probably 可能，大概，或许</p>
 <p>interactive 交互</p>
-<p>revisit</p>
+<p>revisit<br>
+invoked 调用</p>
 <p>at the same time</p>
 </article></div><div class="ui-comments-section">评论区</div></div> <div class="ui-sidebar-section"></div></div><footer class="ui-footer-section">
 
