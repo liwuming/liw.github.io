@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="format-detection" content="telephone=no">
+<title>Linux命令大全(手册) – 真正好用的Linux命令在线查询网站</title>
+
+<link rel="stylesheet" href="./init.css" type="text/css" media="all">
+
+<script src="./markdown-it.js"></script>
+<script src="./prism.js"></script>
+</head>
+<body>
+	<header id="ui-header-section">
+		11
+	</header>
+	
+	<div class="ui-main-section">
+		<div class="ui-main-header">
+			<h1 id="title">hello world</h1>
+		</div>
+		
+		<div class="ui-main-body" id="detail">
+		
+		</div>
+	</div>
+<script>
+(function(){
+var markdownItContainer = function container_plugin(md, name, options) {
+    // Second param may be useful if you decide
+    // to increase minimal allowed marker length
+    function validateDefault(params /*, markup*/) {
+      return params.trim().split(" ", 2)[0] === name;
+    }
+    function renderDefault(tokens, idx, _options, env, slf) {
+      // add a class to the opening tag
+      if (tokens[idx].nesting === 1) {
+        tokens[idx].attrJoin("class", "ui-"+name+"-section");
+      }
+      return slf.renderToken(tokens, idx, _options, env, slf);
+    }
+    options = options || {};
+    var min_markers = 3, marker_str = options.marker || ":", marker_char = marker_str.charCodeAt(0), marker_len = marker_str.length, validate = options.validate || validateDefault, render = options.render || renderDefault;
+    function container(state, startLine, endLine, silent) {
+      var pos, nextLine, marker_count, markup, params, token, old_parent, old_line_max, auto_closed = false, start = state.bMarks[startLine] + state.tShift[startLine], max = state.eMarks[startLine];
+      // Check out the first character quickly,
+      // this should filter out most of non-containers
+      
+            if (marker_char !== state.src.charCodeAt(start)) {
+        return false;
+      }
+      // Check out the rest of the marker string
+      
+            for (pos = start + 1; pos <= max; pos++) {
+        if (marker_str[(pos - start) % marker_len] !== state.src[pos]) {
+          break;
+        }
+      }
+      marker_count = Math.floor((pos - start) / marker_len);
+      if (marker_count < min_markers) {
+        return false;
+      }
+      pos -= (pos - start) % marker_len;
+      markup = state.src.slice(start, pos);
+      params = state.src.slice(pos, max);
+      if (!validate(params, markup)) {
+        return false;
+      }
+      // Since start is found, we can report success here in validation mode
+      
+            if (silent) {
+        return true;
+      }
+      // Search for the end of the block
+      
+            nextLine = startLine;
+      for (;;) {
+        nextLine++;
+        if (nextLine >= endLine) {
+          // unclosed block should be autoclosed by end of document.
+          // also block seems to be autoclosed by end of parent
+          break;
+        }
+        start = state.bMarks[nextLine] + state.tShift[nextLine];
+        max = state.eMarks[nextLine];
+        if (start < max && state.sCount[nextLine] < state.blkIndent) {
+          // non-empty line with negative indent should stop the list:
+          // - ```
+          //  test
+          break;
+        }
+        if (marker_char !== state.src.charCodeAt(start)) {
+          continue;
+        }
+        if (state.sCount[nextLine] - state.blkIndent >= 4) {
+          // closing fence should be indented less than 4 spaces
+          continue;
+        }
+        for (pos = start + 1; pos <= max; pos++) {
+          if (marker_str[(pos - start) % marker_len] !== state.src[pos]) {
+            break;
+          }
+        }
+        // closing code fence must be at least as long as the opening one
+                if (Math.floor((pos - start) / marker_len) < marker_count) {
+          continue;
+        }
+        // make sure tail has spaces only
+                pos -= (pos - start) % marker_len;
+        pos = state.skipSpaces(pos);
+        if (pos < max) {
+          continue;
+        }
+        // found!
+                auto_closed = true;
+        break;
+      }
+      old_parent = state.parentType;
+      old_line_max = state.lineMax;
+      state.parentType = "container";
+      // this will prevent lazy continuations from ever going past our end marker
+            state.lineMax = nextLine;
+      token = state.push("container_" + name + "_open", "blockquote", 1);
+      token.markup = markup;
+      token.block = true;
+      token.info = params;
+      token.map = [ startLine, nextLine ];
+      state.md.block.tokenize(state, startLine + 1, nextLine);
+      token = state.push("container_" + name + "_close", "blockquote", -1);
+      token.markup = state.src.slice(start, pos);
+      token.block = true;
+      state.parentType = old_parent;
+      state.lineMax = old_line_max;
+      state.line = nextLine + (auto_closed ? 1 : 0);
+      return true;
+    }
+    md.block.ruler.before("fence", "container_" + name, container, {
+      alt: [ "paragraph", "reference", "blockquote", "list" ]
+    });
+    md.renderer.rules["container_" + name + "_open"] = render;
+    md.renderer.rules["container_" + name + "_close"] = render;
+};
+ 
+var markdownItDeflist = function deflist_plugin(md) {
+    var isSpace = md.utils.isSpace;
+    // Search `[:~][\n ]`, returns next pos after marker on success
+    // or -1 on fail.
+        function skipMarker(state, line) {
+      var pos, marker, start = state.bMarks[line] + state.tShift[line], max = state.eMarks[line];
+      if (start >= max) {
+        return -1;
+      }
+      // Check bullet
+            marker = state.src.charCodeAt(start++);
+      if (marker !== 126 /* ~ */ && marker !== 58 /* : */) {
+        return -1;
+      }
+      pos = state.skipSpaces(start);
+      // require space after ":"
+            if (start === pos) {
+        return -1;
+      }
+      // no empty definitions, e.g. "  : "
+            if (pos >= max) {
+        return -1;
+      }
+      return start;
+    }
+    function markTightParagraphs(state, idx) {
+      var i, l, level = state.level + 2;
+      for (i = idx + 2, l = state.tokens.length - 2; i < l; i++) {
+        if (state.tokens[i].level === level && state.tokens[i].type === "paragraph_open") {
+          state.tokens[i + 2].hidden = true;
+          state.tokens[i].hidden = true;
+          i += 2;
+        }
+      }
+    }
+    function deflist(state, startLine, endLine, silent) {
+      var ch, contentStart, ddLine, dtLine, itemLines, listLines, listTokIdx, max, nextLine, offset, oldDDIndent, oldIndent, oldParentType, oldSCount, oldTShift, oldTight, pos, prevEmptyEnd, tight, token;
+      if (silent) {
+        // quirk: validation mode validates a dd block only, not a whole deflist
+        if (state.ddIndent < 0) {
+          return false;
+        }
+        return skipMarker(state, startLine) >= 0;
+      }
+      nextLine = startLine + 1;
+      if (nextLine >= endLine) {
+        return false;
+      }
+      if (state.isEmpty(nextLine)) {
+        nextLine++;
+        if (nextLine >= endLine) {
+          return false;
+        }
+      }
+      if (state.sCount[nextLine] < state.blkIndent) {
+        return false;
+      }
+      contentStart = skipMarker(state, nextLine);
+      if (contentStart < 0) {
+        return false;
+      }
+      // Start list
+            listTokIdx = state.tokens.length;
+      tight = true;
+      token = state.push("dl_open", "dl", 1);
+      token.map = listLines = [ startLine, 0 ];
+      
+      // Iterate list items
+      
+            dtLine = startLine;
+      ddLine = nextLine;
+      // One definition list can contain multiple DTs,
+      // and one DT can be followed by multiple DDs.
+      
+      // Thus, there is two loops here, and label is
+      // needed to break out of the second one
+      
+      /*eslint no-labels:0,block-scoped-var:0*/      OUTER: for (;;) {
+        prevEmptyEnd = false;
+        token = state.push("dt_open", "dt", 1);
+        token.map = [ dtLine, dtLine ];
+        token = state.push("inline", "", 0);
+        token.map = [ dtLine, dtLine ];
+        token.content = state.getLines(dtLine, dtLine + 1, state.blkIndent, false).trim();
+        token.children = [];
+        token = state.push("dt_close", "dt", -1);
+        for (;;) {
+          token = state.push("dd_open", "dd", 1);
+          token.map = itemLines = [ nextLine, 0 ];
+          pos = contentStart;
+          max = state.eMarks[ddLine];
+          offset = state.sCount[ddLine] + contentStart - (state.bMarks[ddLine] + state.tShift[ddLine]);
+          while (pos < max) {
+            ch = state.src.charCodeAt(pos);
+            if (isSpace(ch)) {
+              if (ch === 9) {
+                offset += 4 - offset % 4;
+              } else {
+                offset++;
+              }
+            } else {
+              break;
+            }
+            pos++;
+          }
+          contentStart = pos;
+          oldTight = state.tight;
+          oldDDIndent = state.ddIndent;
+          oldIndent = state.blkIndent;
+          oldTShift = state.tShift[ddLine];
+          oldSCount = state.sCount[ddLine];
+          oldParentType = state.parentType;
+          state.blkIndent = state.ddIndent = state.sCount[ddLine] + 2;
+          state.tShift[ddLine] = contentStart - state.bMarks[ddLine];
+          state.sCount[ddLine] = offset;
+          state.tight = true;
+          state.parentType = "deflist";
+          state.md.block.tokenize(state, ddLine, endLine, true);
+          // If any of list item is tight, mark list as tight
+                    if (!state.tight || prevEmptyEnd) {
+            tight = false;
+          }
+          // Item become loose if finish with empty line,
+          // but we should filter last element, because it means list finish
+                    prevEmptyEnd = state.line - ddLine > 1 && state.isEmpty(state.line - 1);
+          state.tShift[ddLine] = oldTShift;
+          state.sCount[ddLine] = oldSCount;
+          state.tight = oldTight;
+          state.parentType = oldParentType;
+          state.blkIndent = oldIndent;
+          state.ddIndent = oldDDIndent;
+          token = state.push("dd_close", "dd", -1);
+          itemLines[1] = nextLine = state.line;
+          if (nextLine >= endLine) {
+            break OUTER;
+          }
+          if (state.sCount[nextLine] < state.blkIndent) {
+            break OUTER;
+          }
+          contentStart = skipMarker(state, nextLine);
+          if (contentStart < 0) {
+            break;
+          }
+          ddLine = nextLine;
+          // go to the next loop iteration:
+          // insert DD tag and repeat checking
+                }
+        if (nextLine >= endLine) {
+          break;
+        }
+        dtLine = nextLine;
+        if (state.isEmpty(dtLine)) {
+          break;
+        }
+        if (state.sCount[dtLine] < state.blkIndent) {
+          break;
+        }
+        ddLine = dtLine + 1;
+        if (ddLine >= endLine) {
+          break;
+        }
+        if (state.isEmpty(ddLine)) {
+          ddLine++;
+        }
+        if (ddLine >= endLine) {
+          break;
+        }
+        if (state.sCount[ddLine] < state.blkIndent) {
+          break;
+        }
+        contentStart = skipMarker(state, ddLine);
+        if (contentStart < 0) {
+          break;
+        }
+        // go to the next loop iteration:
+        // insert DT and DD tags and repeat checking
+            }
+      // Finilize list
+            token = state.push("dl_close", "dl", -1);
+      listLines[1] = nextLine;
+      state.line = nextLine;
+      // mark paragraphs tight if needed
+            if (tight) {
+        markTightParagraphs(state, listTokIdx);
+      }
+      return true;
+    }
+    md.block.ruler.before("paragraph", "deflist", deflist, {
+      alt: [ "paragraph", "reference", "blockquote" ]
+    });
+  };
+
+
+
+var markdownItImplicitFigures = function implicitFiguresPlugin(md, options) {
+  options = options || {};
+
+  function implicitFigures(state) {
+    // reset tabIndex on md.render()
+    var tabIndex = 1;
+
+    // do not process first and last token
+    for (var i=1, l=state.tokens.length; i < (l - 1); ++i) {
+      var token = state.tokens[i];
+	
+	
+      if (token.type !== 'inline') { continue; }
+      // children: image alone, or link_open -> image -> link_close
+      if (!token.children || (token.children.length !== 1 && token.children.length !== 3)) { continue; }
+      // one child, should be img
+      if (token.children.length === 1 && token.children[0].type !== 'image') { continue; }
+      // three children, should be image enclosed in link
+      if (token.children.length === 3 &&
+          (token.children[0].type !== 'link_open' ||
+           token.children[1].type !== 'image' ||
+           token.children[2].type !== 'link_close')) {
+        continue;
+      }
+      // prev token is paragraph open
+      if (i !== 0 && state.tokens[i - 1].type !== 'paragraph_open') { continue; }
+      // next token is paragraph close
+      if (i !== (l - 1) && state.tokens[i + 1].type !== 'paragraph_close') { continue; }
+
+      // We have inline token containing an image only.
+      // Previous token is paragraph open.
+      // Next token is paragraph close.
+      // Lets replace the paragraph tokens with figure tokens.
+      var figure = state.tokens[i - 1];
+      figure.type = 'figure_open';
+      figure.tag = 'figure';
+      state.tokens[i + 1].type = 'figure_close';
+      state.tokens[i + 1].tag = 'figure';
+		
+		
+		
+      if (options.dataType == true) {
+        state.tokens[i - 1].attrPush(['data-type', 'image']);
+		
+		
+      }
+	  state.tokens[i - 1].attrPush(['class', 'image-package']);
+      var image;
+      if (options.link == true && token.children.length === 1) {
+        image = token.children[0];
+        token.children.unshift(
+          new state.Token('link_open', 'a', 1)
+        );
+		
+        token.children[0].attrPush(['href', image.attrGet('src')]);
+        token.children.push(
+          new state.Token('link_close', 'a', -1)
+        );
+      }
+
+      // for linked images, image is one off
+      image = token.children.length === 1 ? token.children[0] : token.children[1];
+
+      if (options.figcaption != true) {
+        if (image.children && image.children.length) {
+			let el = new state.Token('p_open', 'p', 1);
+			el.attrPush(['class','image-caption']);
+          token.children.push(el);
+		  
+
+		  
+          token.children.splice(token.children.length, 0, ...image.children);
+          token.children.push(
+            new state.Token('p_close', 'p', -1)
+            );
+          image.children.length = 0;
+        }
+      }
+
+      if (options.copyAttrs && image.attrs) {
+		
+        const f = options.copyAttrs === true ? '' : options.copyAttrs
+        figure.attrs = image.attrs.filter(([k,v]) => k.match(f))
+      }
+
+      if (options.tabindex == true) {
+        // add a tabindex property
+        // you could use this with css-tricks.com/expanding-images-html5
+        state.tokens[i - 1].attrPush(['tabindex', tabIndex]);
+        tabIndex++;
+      }
+    }
+  }
+  md.core.ruler.before('linkify', 'implicit_figures', implicitFigures);
+};
+
+
+
+	let md_options = {
+        /*html: false,
+        xhtmlOut: false,
+        linkify: true,
+        typography: true,
+        typographer: false,
+        breaks: true,
+		*/
+		html: true,
+		linkify: true,
+		typographer: true,
+  
+        highlight: function (code, lang) {
+          let language = "";
+          switch (lang.toLowerCase()) {
+            case "html":
+            case "markdown":
+            case "xml":
+              language = "markup";
+              break;
+            case "css":
+              language = "css";
+              break;
+            case "js":
+            case "json":
+            case "javascript":
+              language = "javascript";
+              break;
+            case "sql":
+            case "php":
+            case "java":
+            case "python":
+            case "go":
+            case "bash":
+            case "docker":
+              language = lang.toLowerCase();
+              break;
+            default:
+              language = lang.toLowerCase();
+              break;
+          }
+		
+			if ( language.length > 0 && Object.keys(Prism.languages).includes(language)){
+				let tmp = Prism.highlight(code,Prism.languages[language],language);
+
+				let tmp_code = Prism.highlight(code,Prism.languages[language],language);
+
+				let rows = code.split("\n").length;
+				var line_content = "";
+				for (let i = 0; i < rows - 1; i++) {
+				  line_content += '<p class="row-number"></p>';
+				}
+				line_content = '<div class="line-numbers-rows">' + line_content + "</div>";
+				return '<pre class="line-numbers">'+line_content+'<code class="language-'+language+'">'+tmp_code+'</code></pre>';
+			}else{
+			  console.log(222);
+			}
+        },
+    };
+	
+	
+	window.md = new window.markdownit(md_options).use(markdownItImplicitFigures).use(markdownItContainer, "success").use(markdownItContainer, "info").use(markdownItContainer, "warning").use(markdownItContainer, "error");
+	//let md = new window.markdownit();
+	//let contents = document.querySelector("#md_contents");
+	
+	
+	let query = window.location.search;
+	if(query.length>0){
+		let xhr = new XMLHttpRequest(),url="./cache/"+query.substring(1)+".md";
+		xhr.open("get",url);
+		xhr.responseType = "text";
+		xhr.send();
+		xhr.onload = function () {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				document.querySelector("#detail").innerHTML = window.md.render(xhr.response);
+			}
+		};
+	}
+})();
+</script>
+
+<!--<script>
+	let query = window.location.search;
+	if(query.length>0){
+		let xhr = new XMLHttpRequest(),url="./cache/"+query.substring(1)+".md";
+		xhr.open("get",url);
+		xhr.responseType = "text/markdown";
+		xhr.send();
+		xhr.onload = function () {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				let article_list = xhr.response;
+				
+				document.querySelector("#main").innerHTML = html;
+			}
+		};
+	}
+
+	
+</script>
+-->
+	<footer>
+	
+	</footer>
+</body>
+</html>

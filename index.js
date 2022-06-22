@@ -1,0 +1,331 @@
+import fs from 'fs';
+import path from 'path';
+
+
+import yaml from 'js-yaml';
+import {customAlphabet} from 'nanoid';
+
+
+const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const nanoid = customAlphabet(chars,20)
+
+
+
+/*
+import Md  from 'markdown-it';
+import MtC from "markdown-it-container";
+import MtI from "markdown-it-imsize";
+import MtF from "markdown-it-implicit-figures";
+
+import Prism from "prismjs";
+import "prismjs/components/prism-markup-templating.js";
+import "prismjs/components/prism-java.js";
+import "prismjs/components/prism-bash.js";
+import "prismjs/components/prism-php.js";
+import "prismjs/components/prism-python.js";
+import "prismjs/components/prism-javascript.js";
+import "prismjs/components/prism-sql.js";
+import config from './config.js';
+
+const __dirname = path.resolve();
+const reg = /^---\s*?([a-z][\s\S]*?)\s*?---.*?/mi;
+
+const encoding = 'utf8',md_options= {
+	html: false,
+	xhtmlOut: false,
+	linkify: true,
+	typography: true,
+	typographer: false,
+	breaks: true,
+	highlight: function (code, lang) {
+	  let language = "";
+	  switch (lang.toLowerCase()) {
+		case "html":
+		case "markdown":
+		case "xml":
+		  language = "markup";
+		  break;
+		case "css":
+		  language = "css";
+		  break;
+		case "js":
+		case "json":
+		case "javascript":
+		  language = "javascript";
+		  break;
+		case "sql":
+		case "php":
+		case "java":
+		case "python":
+		case "go":
+		case "bash":
+		case "docker":
+		  language = lang.toLowerCase();
+		  break;
+		default:
+		  language = lang.toLowerCase();
+		  break;
+	  }
+
+	  if (
+		language.length > 0 &&
+		Object.keys(Prism.languages).includes(language)
+	  ) {
+		let tmp = Prism.highlight(
+		  code,
+		  Prism.languages[language],
+		  language
+		);
+		console.log(tmp);
+
+		let tmp_code = Prism.highlight(
+		  code,
+		  Prism.languages[language],
+		  language
+		);
+
+		let rows = code.split("\n").length;
+		var line_content = "";
+		for (let i = 0; i < rows - 1; i++) {
+		  line_content += '<p class="row-number"></p>';
+		}
+		line_content =
+		  '<div class="line-numbers-rows">' + line_content + "</div>";
+		return `<pre class="line-numbers">${line_content}<code class="language-${language}">${tmp_code}</code></pre>`;
+	  }
+	},
+  };
+	  
+	  
+//const commands = {};
+const header = file_get_contents(__dirname+'/website/header.html');
+const footer = file_get_contents(__dirname+'/website/footer.html');
+const md = new Md(md_options).use(MtI).use(MtF).use(MtC, "success", {
+  validate: function (params) {
+	return params.trim() === "success";
+  },
+  render: (tokens, idx) => {
+	if (tokens[idx].nesting === 1) {
+	  return `<blockquote class="ui-success-section">`;
+	} else {
+	  return "</blockquote>";
+	}
+  },
+}).use(MtC, "info", {
+	validate: function (params) {
+		return params.trim() === "info";
+	},
+	render: (tokens, idx) => {
+		if (tokens[idx].nesting === 1) {
+		  return `<blockquote class="ui-info-section">`;
+		} else {
+		  return "</blockquote>";
+		}
+	  },
+}).use(MtC, "warning", {
+	  validate: function (params) {
+		return params.trim() === "warning";
+	  },
+	  render: (tokens, idx) => {
+		if (tokens[idx].nesting === 1) {
+		  return `<blockquote class="ui-warning-section">`;
+		} else {
+		  return "</blockquote>";
+		}
+	  },
+}).use(MtC, "error", {
+  validate: function (params) {
+	return params.trim() === "error";
+  },
+  render: (tokens, idx) => {
+	if (tokens[idx].nesting === 1) {
+	  return `<blockquote class="ui-error-section">`;
+	} else {
+	  return "</blockquote>";
+	}
+  },
+});
+
+
+
+let commands = file_get_contents('./commands.json');
+commands = JSON.parse(commands);
+
+create_module(commands,config);
+*/
+
+
+
+global.obj = {};
+const __dirname = path.resolve();
+
+clear_cache(__dirname+'/docs/cache');
+main(__dirname+'/markdown_file');
+file_put_contents('./docs/api.json',JSON.stringify(global.obj));
+
+function create_module(commands,config){
+	
+	for(let group in commands){
+		let markdown = file_get_contents(__dirname+"/command/"+group+"/readme.md");
+		
+		
+		if(markdown){
+			let result = markdown.match(reg);
+			
+			if(result && result.length>0){
+				//let obj = yaml.load(result[1]);
+				markdown = markdown.replace(result[0],'');
+			}
+			
+			
+			
+			let contents = md.render(markdown);
+			contents = '<div class="ui-body-section"><div class="ui-main-section"><div class="ui-article-section"> <div class="ui-article-title"> <h1>'+config[group]+'</h1><div class="operate"> <a target="_blank" href="https://github.com/jaywcjlove/linux-command/edit/master/command/apachectl.md">纠正错误</a><span class="split"></span> <a target="_blank" href="https://github.com/jaywcjlove/linux-command/edit/master/command/apachectl.md">添加实例</a> </div> </div><article id="detail">'+contents+'</article></div><div class="ui-comments-section">评论区</div></div> <div class="ui-sidebar-section"></div></div>';
+			
+			let html = header + contents + footer;
+			file_put_contents(__dirname+"/docs/commands/"+group+'/index.html',html);
+		}else{
+			console.log(404);
+		}
+		
+	}
+	//let html = header + contents + footer;
+	//file_put_contents(__dirname+"/docs/index.html",html);
+}
+
+
+/*
+let filesList = create_detail(__dirname+'/command');
+fs.readFile('./1.md', 'utf8' , (err, data) => {
+	create_home();
+	return;
+  if (err) {
+    console.error(err)
+    return
+  }
+  
+  let md = new Md();
+  let content = md.render(data);
+  fs.writeFile('./1.txt', content, err => {
+	  if (err) {
+		console.error(err)
+		return
+	  }
+	  //文件写入成功。
+	  console.log('write--ok');
+	})
+  
+  console.log(data)
+})
+
+
+fs.writeFile('/Users/joe/test.txt', content, err => {
+  if (err) {
+    console.error(err)
+    return
+  }
+  //文件写入成功。
+})
+*/
+function clear_cache(dir){
+	//删除cache文件夹下的文件
+    const files = fs.readdirSync(dir);
+    files.forEach((item, index) => {
+        let tmp_full_path = path.join(dir, item);
+		
+		fs.unlinkSync(tmp_full_path);
+    });
+	return true;
+}
+
+
+function main(dir,filesList = []){
+	//删除cache文件夹下的文件
+    const files1 = fs.readdirSync(dir);
+    files1.forEach((item, index) => {
+        let fullPath = path.join(dir, item);
+        const stat = fs.statSync(fullPath);
+        if (stat.isDirectory()) {      
+            main(path.join(dir, item), filesList);  //递归读取文件
+        } else if(item.toLowerCase() !== 'readme.md'){
+            
+			//console.log(fullPath); 
+			//filesList.push(fullPath); 
+			//console.log(path.basename(dir));
+			//console.log(item);
+			//console.log(path.basename(item,'.md'));
+			//var fileName = basename(file,extension); // 获取没有后缀的文件名
+			create_detail(path.basename(dir),fullPath);
+        }        
+    });
+    //return filesList;
+}
+
+
+function create_detail(dirname,filepath){
+	/*此处可以做一些优化，实现seo，关键字之类的*/
+	let markdown = file_get_contents(filepath);
+	
+	
+	//let contents = file_get_contents(__dirname+'/1.md');
+	let reg = /^---\s*?([a-z][\s\S]*?)\s*?---.*?/mi;
+	
+	
+	let result = markdown.match(reg);
+	
+	console.log(result);
+	
+	if(result && result.length>0){
+		let hash_sha = nanoid();
+		let content = markdown.replace(result[0],'');
+		file_put_contents(__dirname+"/docs/cache/"+hash_sha+".md",content);
+		global.obj[hash_sha] = yaml.load(result[1]);
+	}else{
+		console.error('yaml解析错误,或许格式错误,或许缺少command/command-desc');
+	}
+}
+
+
+		/*
+		commands[dirname][obj.commond]['name'] = obj.command;
+		commands[dirname][obj.commond]['path'] = "/"+obj.command;
+		commands[dirname][obj.commond]['desc'] = obj["command-desc"];
+		*/
+function create_home(commands,config){
+	let contents = '<div class="ui-body-section"><div class="ui-main-section"><div class="ui-contents-section" style="margin:0;">';
+	for(let group in commands){
+        contents += '<div class="ui-chapter-section"><h2> <a href="/commands/'+group+'/index.html" title="">'+config[group]+'</a></h2><ul>';
+		for(let command in commands[group]){
+			contents += '<li class="format-standard"><a href="'+commands[group][command]["path"]+'.html">'+commands[group][command]["name"]+'--'+commands[group][command]["desc"]+'</a></li>';
+			
+			contents += '<li class="format-standard"><a href="'+commands[group][command]["path"]+'.html">'+commands[group][command]["name"]+'--'+commands[group][command]["desc"]+'</a></li>';
+		}
+        contents += '</ul></div>';
+			
+	}
+	contents += '</div></div> <div class="ui-sidebar-section"></div></div>';
+	let html = header + contents + footer;
+	file_put_contents(__dirname+"/docs/index.html",html);
+}
+
+
+function file_get_contents(file_path,encoding='utf-8'){
+	try{
+		let contents = fs.readFileSync(file_path,encoding)
+		return contents;
+	}catch(err){
+		return false;
+	}
+}
+
+function file_put_contents(file_path,content,encoding="utf-8"){
+	let options = {encoding:encoding,flag:"w"};
+	let dirname = path.dirname(file_path,'.html');
+	if (!fs.existsSync(dirname)) {
+		fs.mkdirSync(dirname)
+	}
+	let result = fs.writeFileSync(file_path, content,options);
+	return result;
+}
+
+

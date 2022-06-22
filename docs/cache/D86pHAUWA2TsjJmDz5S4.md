@@ -1,0 +1,31 @@
+
+
+# mysql安装
+
+关于mysql
+
+关于mysql版本的选择
+
+# mysql初始化
+
+
+
+# root账户忘记密码怎么办?
+
+```mysql
+
+# 1. 停掉mysql服务
+systemctl stop mysqld
+
+# 2. 以跳过授权表的方式登录mysql服务器端
+mysqld --skip-grant-tables --skip-networing &
+
+# 3. 登录mysql
+
+# 4. 刷新权限表
+
+# 5. 修改密码
+set password = password('');
+
+
+```
