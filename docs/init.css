@@ -9,10 +9,10 @@
     --ui-average-width: calc( 50vw - 13px);
     --preview-font-color: #333;
     --heading-font-color: #333;
-    --heading-one-font-size: 36px;
-    --heading-two-font-size: 32px;
-    --heading-three-font-size: 28px;
-    --heading-four-font-size: 24px;
+    --heading-one-font-size: 28px;
+    --heading-two-font-size: 24px;
+    --heading-three-font-size:22px;
+    --heading-four-font-size: 20px;
     --heading-five-font-size: 20px;
     --heading-fix-font-size: 18px;
     --preview-blockquote-color: #333;
@@ -51,10 +51,10 @@ a:hover{text-decoration:underline;}
 	background:#fff;border:1px solid #dedede;border-radius:5px;
 }
 .ui-main-section .ui-main-header{
-	margin:0 -20px;padding:10px 20px;height:50px;line-height:50px;
+	margin:0 -20px;padding:10px 20px;height:55px;line-height:55px;
 	border-bottom:2px solid #ddd;
 }
-.ui-main-section .ui-main-header h1{font-size:28px;}
+.ui-main-section .ui-main-header h1{font-size:33px;}
 .ui-main-section .ui-main-body{margin:20px auto;}
 
  /*
