@@ -45,7 +45,7 @@ a:hover{text-decoration:underline;}
 
 .article-box{margin:0 -20px;padding:15px 20px;border-bottom:1px solid #ddd;}
 .ui-main-section{
-	margin:60px auto 0 auto;
+	margin:60px auto 10px auto;
 	padding:0 20px 15px 20px;
 	width:1000px;
 	background:#fff;border:1px solid #dedede;border-radius:5px;
