@@ -28,6 +28,7 @@ body{
 	background:#f6f7f8;
 }
 a{text-decoration:none;color:#333;}
+a:hover{text-decoration:underline;}
 
 .none{
 	display:none;
