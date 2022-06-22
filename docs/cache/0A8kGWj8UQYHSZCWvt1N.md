@@ -12,8 +12,7 @@
 
 # root账户忘记密码怎么办?
 
-```mysql
-
+```sql
 # 1. 停掉mysql服务
 systemctl stop mysqld
 
@@ -26,6 +25,4 @@ mysqld --skip-grant-tables --skip-networing &
 
 # 5. 修改密码
 set password = password('');
-
-
 ```
